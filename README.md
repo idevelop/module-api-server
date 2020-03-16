@@ -11,9 +11,8 @@ module.exports = { hello: name => `hello ${name}` };
 ```js
 // client side
 
-import { client } from 'module-api-server';
+const api = require('module-api-server').client();
 
-const api = await client();
 const result = await api.hello('andrei');
 // => hello andrei
 ```
