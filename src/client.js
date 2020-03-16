@@ -2,6 +2,26 @@ const fetch = require('node-fetch');
 
 const { ensureSuffix } = require('./util');
 
+const PREFIX = Symbol('prefix');
+
+const proxyHandler = {
+  get: (target, property) => createProxy([...target[PREFIX], property]),
+
+  apply: async (target, _this, arguments) =>
+    await callRemoteFunction(
+      target[PREFIX][0],
+      target[PREFIX].slice(1),
+      arguments
+    ),
+};
+
+const createProxy = (prefix = []) => {
+  const f = () => {};
+  f[PREFIX] = prefix;
+  return new Proxy(f, proxyHandler);
+};
+
+// Used to recreate and throw the remote exception
 const newObjectWithClassName = (name, extra) => {
   const C = class {};
   Object.defineProperty(C, 'name', { value: name });
@@ -10,16 +30,20 @@ const newObjectWithClassName = (name, extra) => {
   return o;
 };
 
-const remoteFunctionWrapper = functionEndpoint => async (...input) => {
-  const response = await fetch(functionEndpoint, {
+const callRemoteFunction = async (apiEndpoint, functionPath, arguments) => {
+  const endpoint = apiEndpoint + functionPath.join('/');
+  const response = await fetch(endpoint, {
     method: 'post',
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify(input),
+    body: JSON.stringify(arguments),
   });
 
-  // TODO: throw exception if parse fails
+  if (response.status === 404) {
+    throw new ReferenceError(`${functionPath.join('.')} is not defined`);
+  }
+
   const data = await response.json();
 
   if (response.status === 500) {
@@ -30,40 +54,5 @@ const remoteFunctionWrapper = functionEndpoint => async (...input) => {
   return data;
 };
 
-const getNamespaceFromResponse = (data, f, prefix = []) => {
-  const keys = Object.keys(data);
-  const result = {};
-  for (let key of keys) {
-    const value = data[key];
-    const path = [...prefix, key];
-    if (value === '$') {
-      result[key] = f(path);
-    } else {
-      result[key] = getNamespaceFromResponse(value, f, path);
-    }
-  }
-
-  return result;
-};
-
-module.exports = async ({ endpoint = '/' } = { endpoint: '/' }) => {
-  endpoint = ensureSuffix(endpoint, '/');
-
-  let response;
-  try {
-    response = await fetch(endpoint, {
-      method: 'get',
-    });
-  } catch (e) {
-    console.error('Failed to initialize API namespace.');
-    return {};
-  }
-
-  const body = await response.json();
-
-  const namespace = getNamespaceFromResponse(body, path =>
-    remoteFunctionWrapper(endpoint + path.join('/'))
-  );
-
-  return namespace;
-};
+module.exports = ({ endpoint = '/' } = { endpoint: '/' }) =>
+  createProxy([ensureSuffix(endpoint, '/')]);

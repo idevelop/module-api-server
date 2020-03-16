@@ -24,7 +24,7 @@ That's it.
 
 On the server-side, the library loads your modules into a unified namespace and exposes it through a simple REST API.
 
-Start a standalone server through the CLI:
+Start a standalone server through the `npx` CLI:
 
 ```
 npx module-api-server -p 1234 --cors --endpoint=/api my-modules/hello my-modules/time
@@ -45,7 +45,7 @@ npm install module-api-server
 const express = require('express');
 const app = express();
 
-const { middleware } = require('module-api-server')({
+const { middleware } = require('module-api-server').server({
   paths: [...], // array of module absolute paths
   modules: {...}, // map of preloaded modules
   endpoint: '/api', // optional, defaults to /
@@ -60,8 +60,7 @@ On the client side the library first fetches the namespace through the API and m
 ```js
 import { client } from 'module-api-server';
 
-// GET /api => { "hello":"$" }
-const api = await client({
+const api = client({
   endpoint: '/api', // optional, defaults to /
 });
 

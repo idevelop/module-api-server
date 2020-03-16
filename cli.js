@@ -3,7 +3,7 @@
 const args = require('gar')(process.argv.slice(2));
 const http = require('http');
 const path = require('path');
-const server = require('./src');
+const { server } = require('.');
 
 const port = args.port || args.p;
 const endpoint = args.endpoint || '/';
