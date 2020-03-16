@@ -19,6 +19,7 @@
     "rpc"
   ],
   "dependencies": {
-    "gar": "^1.0.4"
+    "gar": "^1.0.4",
+    "node-fetch": "^2.6.0"
   }
 }
