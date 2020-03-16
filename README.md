@@ -27,10 +27,10 @@ On the server-side, the library loads your modules into a unified namespace and 
 Start a standalone server through the CLI:
 
 ```
-> npx module-api-server -p 1234 --cors my-modules/hello my-modules/time
+> npx module-api-server -p 1234 --cors --endpoint=/api my-modules/hello my-modules/time
 
 Loaded namespace { time: [Function], hello: [Function: hello] }
-Serving on port 1234, endpoint: /api/, CORS enabled
+Serving on port 1234, endpoint: /api, CORS enabled
 ```
 
 Or you can attach as middleware to your existing express server:
@@ -53,7 +53,7 @@ const { middleware } = require('module-api-server')({
 app.use(middleware);
 ```
 
-On the client side the library first fetches the namespace through the API and mirrors it as local async functions (promises). When a local function is executed, the library calls into into its remote counterpart through the API and returns the result value.
+On the client side the library first fetches the namespace through the API and mirrors it as local async functions (promises). When a local function is executed, the library calls into its remote counterpart through the API and returns the result value.
 
 ```
 npm install module-api-server
