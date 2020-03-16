@@ -1,0 +1,24 @@
+{
+  "name": "module-api-server",
+  "version": "0.1.0",
+  "description": "Instantly expose server-side node modules as REST API and easily consume through mirrored client-side functions.",
+  "main": "src/index.js",
+  "author": "Andrei Gheorghe <andreig@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/idevelop/module-api-server.git"
+  },
+  "bin": {
+    "module-api-server": "cli.js"
+  },
+  "keywords": [
+    "module",
+    "server",
+    "api",
+    "rpc"
+  ],
+  "dependencies": {
+    "gar": "^1.0.4"
+  }
+}
