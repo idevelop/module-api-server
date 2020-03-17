@@ -71,16 +71,16 @@ const requestHandler = (namespace, { endpoint = '/', cors = false }) => (
           console.error('Unknown function requested ' + functionName);
           response.writeHead(404);
           response.end();
-        }
-
-        try {
-          const result = await f(...functionArguments);
-          response.writeHead(200);
-          response.end(JSON.stringify(result));
-        } catch (e) {
-          response.setHeader('x-exception', e.constructor.name);
-          response.writeHead(500);
-          response.end(JSON.stringify(e));
+        } else {
+          try {
+            const result = await f(...functionArguments);
+            response.writeHead(200);
+            response.end(JSON.stringify(result));
+          } catch (e) {
+            response.setHeader('x-exception', e.constructor.name);
+            response.writeHead(500);
+            response.end(JSON.stringify(e));
+          }
         }
       }
     });
