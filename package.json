@@ -1,6 +1,6 @@
 {
   "name": "module-api-server",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Instantly expose server-side node modules as REST API and easily consume through mirrored client-side functions.",
   "main": "src/index.js",
   "author": "Andrei Gheorghe <andreig@gmail.com>",
@@ -19,7 +19,6 @@
     "rpc"
   ],
   "dependencies": {
-    "gar": "^1.0.4",
-    "node-fetch": "^2.6.0"
+    "gar": "^1.0.4"
   }
 }

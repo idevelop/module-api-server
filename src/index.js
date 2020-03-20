@@ -1,6 +1,5 @@
 const requestHandler = require('./request-handler');
 const loader = require('./loader');
-const client = require('./client');
 const server = ({ paths = [], modules = {}, endpoint = '/', cors = false }) => {
   const namespace = loader({ paths, modules });
   console.log('Loaded namespace', namespace);
@@ -18,4 +17,4 @@ const server = ({ paths = [], modules = {}, endpoint = '/', cors = false }) => {
   return { handler, middleware };
 };
 
-module.exports = { client, server };
+module.exports = { server };

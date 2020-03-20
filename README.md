@@ -11,8 +11,8 @@ module.exports = { hello: name => `hello ${name}` };
 ```js
 // client side
 
-const api = require('module-api-server').client();
-
+const client = require('module-api-client');
+const api = client();
 const result = await api.hello('andrei');
 // => hello andrei
 ```
@@ -54,10 +54,10 @@ const { middleware } = require('module-api-server').server({
 app.use(middleware);
 ```
 
-On the client side the library first fetches the namespace through the API and mirrors it as local async functions (promises). When a local function is executed, the library calls into its remote counterpart through the API and returns the result value.
+The [client library](https://github.com/idevelop/module-api-client) first fetches the namespace through the API and mirrors it as local async functions (promises). When a local function is executed, the library calls into its remote counterpart through the API and returns the result value.
 
 ```js
-import { client } from 'module-api-server';
+import client from 'module-api-client';
 
 const api = client({
   endpoint: '/api', // optional, defaults to /
