@@ -1,6 +1,6 @@
 {
   "name": "module-api-server",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Instantly expose server-side node modules as REST API and easily consume through mirrored client-side functions.",
   "main": "src/index.js",
   "author": "Andrei Gheorghe <andreig@gmail.com>",

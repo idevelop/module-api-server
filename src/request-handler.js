@@ -47,15 +47,14 @@ const requestHandler = (namespace, { endpoint = '/', cors = false }) => (
 
       if (cors) {
         response.setHeader('Access-Control-Allow-Methods', 'get, post');
-        response.setHeader(
-          'Access-Control-Allow-Origin',
-          cors === true ? '*' : cors
-        );
+        response.setHeader('Access-Control-Allow-Origin', '*');
+        response.setHeader('Access-Control-Allow-Headers', '*');
       }
 
-      if (method === 'GET') {
-        response.writeHead(200);
-        response.end(getNamespaceJSON(namespace));
+      if (method === 'OPTIONS') {
+        response.writeHead(200).end();
+      } else if (method === 'GET') {
+        response.writeHead(200).end(getNamespaceJSON(namespace));
       } else if (method === 'POST') {
         const functionName = url
           .substr(endpoint.length)
