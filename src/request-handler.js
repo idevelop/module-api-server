@@ -76,9 +76,13 @@ const requestHandler = (namespace, { endpoint = '/', cors = false }) => (
             response.writeHead(200);
             response.end(JSON.stringify(result));
           } catch (e) {
-            response.setHeader('x-exception', e.constructor.name);
             response.writeHead(500);
-            response.end(JSON.stringify(e));
+            response.end(
+              JSON.stringify({
+                name: e.constructor.name,
+                value: e,
+              })
+            );
           }
         }
       }
