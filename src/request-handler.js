@@ -77,12 +77,7 @@ const requestHandler = (namespace, { endpoint = '/', cors = false }) => (
             response.end(JSON.stringify(result));
           } catch (e) {
             response.writeHead(500);
-            response.end(
-              JSON.stringify({
-                name: e.constructor.name,
-                value: e,
-              })
-            );
+            response.end(JSON.stringify(e.stack));
           }
         }
       }
