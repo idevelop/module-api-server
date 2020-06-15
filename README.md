@@ -8,6 +8,14 @@ Instantly expose server-side node modules through a REST API.
 module.exports = { hello: name => `hello ${name}` };
 ```
 
+```bash
+npx module-api-server ./my-module.js
+
+> Loaded namespace { hello: [Function: hello] }
+> Serving on port 1234, endpoint: /api, CORS enabled
+
+```
+
 ```js
 // client side
 
